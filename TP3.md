@@ -149,32 +149,151 @@ drwx------ 2 alice   dev       57 Sep 15 08:20 alice
 
 ## 9. Pouvez-vous ouvrir une session en tant que alice ? Pourquoi ?
 
+```console
+User@localhost:~$ su alice
+Password:
+```
+
+On ne peut pas car on a pas le mot de passe d'alice
+
+Mais on peut forcer avec : 
+```console
+User@localhost:~$ sudo su alice
+alice@localhost:/home/User$
+```
+
+Etant donné qu'on a pas setup de mot de passe pour sa session la session devrait etre inactive..
+
 ## 10. Activez le compte de l’utilisateur alice et vérifiez que vous pouvez désormais vous connecter avec son compte.
+
+On setup un mot de passe :
+```console
+User@localhost:~$ sudo passwd alice
+```
+
+Maintenant , on peut se connecter:
+```console
+User@localhost:~$ su alice
+Password:
+alice@localhost:/home/User$
+```
 
 ## 11. Comment obtenir l’uid et le gid de alice ?
 
+On peut le voir en faisant :
+```console
+User@localhost:~$ id alice
+uid=1002(alice) gid=1004(alice) groups=1004(alice),1002(dev)
+```
+
 ## 12. Quelle commande permet de retrouver l’utilisateur dont l’uid est 1003 ?
+
+On peut regarder dans `/etc/passwd`
+```console
+User@localhost:~$ grep 1003 /etc/passwd
+bob:x:1003:1005::/home/bob:/bin/sh
+dave:x:1004:1003::/home/dave:/bin/sh
+charlie:x:1005:1003::/home/charlie:/bin/sh
+```
+
+On peut aussi utiliser : 
+```console
+User@localhost:~$ id 1003
+uid=1003(bob) gid=1005(bob) groups=1005(bob),1002(dev),1003(infra)
+```
+On voit dans les deux cas que bob à l'uid 1003
 
 ## 13. Quel est l’id du groupe dev ?
 
+On voit avec la commande precedente  que l'ID de dev est 1002
+
+On peut le faire aussi avec :
+```console
+User@localhost:~$ grep 1002 /etc/group
+dev:x:1002:alice,bob,dave
+```
+
 ## 14. Quel groupe a pour gid 1002 ? ( Rien n’empêche d’avoir un groupe dont le nom serait 1002...)
+
+Le group `dev`
 
 ## 15. Retirez l’utilisateur charlie du groupe infra. Que se passe-t-il ? Expliquez.
 
+```console
+User@localhost:~$ gpasswd -d charlie infra
+gpasswd: Permission denied.
+```
+
+Avec sudo :
+```console
+User@localhost:~$ sudo gpasswd -d charlie infra
+Removing user charlie from group infra
+```
+
 ## 16. Modifiez le compte de dave de sorte que :
 
-— il expire au 1
-er juin 2021
+— il expire au 1er juin 2021 :
+```console
+User@localhost:~$ sudo usermod -e 2021-06-01 dave
+```
+
 — il faut changer de mot de passe avant 90 jours
+```console
+User@localhost:~$ sudo usermod -e 2021-06-01 dave
+```
+
 — il faut attendre 5 jours pour modifier un mot de passe
+```console
+User@localhost:~$ sudo usermod -m dave
+```
+
 — l’utilisateur est averti 14 jours avant l’expiration de son mot de passe
+```console
+User@localhost:~$ sudo usermod -W dave
+```
+
 — le compte sera bloqué 30 jours après expiration du mot de passe
+```console
+User@localhost:~$ sudo chage -I 30 dave
+```
+
+On peut tout verifier avec :
+```console
+User@localhost:~$ sudo chage -l dave
+Last password change                                    : Sep 15, 2022
+Password expires                                        : never
+Password inactive                                       : never
+Account expires                                         : Jan 06, 2021
+Minimum number of days between password change          : 0
+Maximum number of days between password change          : 99999
+Number of days of warning before password expires       : 7
+```
 
 ## 17. Quel est l’interpréteur de commandes (Shell) de l’utilisateur root ?
  
+```console
+User@localhost:~$ grep root /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+```
+L'interpreteur de commandes de root est `bash`
+
 ## 18. Si vous regardez la liste des comptes présents sur la machine, vous verrez qu’il en existe un nommé nobody. A quoi correspond-il ?
 
+```console
+User@localhost:~$ grep nobody /etc/passwd
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+```
+
+L'user nobody est le nom conventionnel d'un compte d'utilisateur à qui aucun fichier n'appartient, qui n'est dans aucun groupe qui a des privilèges et dont les seules possibilités sont celles que tous les "autres utilisateurs
+
 ## 19. Par défaut, combien de temps la commande sudo conserve-t-elle votre mot de passe en mémoire ? Quelle commande permet de forcer sudo à oublier votre mot de passe ?
+
+La commande sudo enregistre le mot de passe pendant 15mins. 
+
+Pour forcer l'oubli , on peut : 
+```console
+User@localhost:~$ sudo -k
+```
 
 # Exercice 2. Gestion des permissions <a id='Anch2'></a>
 
