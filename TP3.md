@@ -95,6 +95,25 @@ infra:x:1003:bob,dave,charlie
 
 ## 5. Faites de dev le groupe propriétaire des répertoires /home/alice et /home/bob et de infra le groupe propriétaire de /home/charlie et /home/dave
 
+```console
+User@localhost:~$ sudo chgrp -R dev /home/alice
+User@localhost:~$ sudo chgrp -R dev /home/charlie
+User@localhost:~$ sudo chgrp -R dev /home/dave
+```
+
+On peut verifier avec : 
+
+```console
+User@localhost:~$ ls -l /home/
+total 4
+drwxr-x--- 2 alice   dev       57 Sep 15 08:20 alice
+drwxr-x--- 3 ansible ansible   69 May 27 08:41 ansible
+drwxr-x--- 2 bob     bob       57 Sep 15 08:30 bob
+drwxr-x--- 2 charlie infra     57 Sep 15 08:33 charlie
+drwxr-x--- 2 dave    infra     57 Sep 15 08:30 dave
+drwxr-x--- 5 User    User    4096 Sep 15 08:23 User
+```
+
 ## 6. Remplacez le groupe primaire des utilisateurs :
 
 - dev pour alice et bob
