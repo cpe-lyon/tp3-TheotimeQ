@@ -2,21 +2,9 @@
 
 # Table des matières
 
-[Exercice 1.Variables d'environnement](#Anch1)
+[Exercice 1.Gestion des utilisateurs et des groupes](#Anch1)
 
-[Exercice 2.Contrôle de mot de passe](#Anch2)
-
-[Exercice 3.Expression rationelles](#Anch3)
-
-[Exercice 4.Controle d'utilisateur](#Anch4)
-
-[Exercice 5.Factorielle](#Anch5)
-
-[Exercice 6.Le juste prix](#Anch6)
-
-[Exercice 7.Statistique](#Anch7)
-
-[Exercice 8.Bonus](#Anch8)
+[Exercice 2.Gestion des permissions](#Anch2)
 
 # Exercice 1. Gestion des utilisateurs et des groupes <a id='Anch1'></a>
 
@@ -117,11 +105,47 @@ drwxr-x--- 5 User    User    4096 Sep 15 08:23 User
 ## 6. Remplacez le groupe primaire des utilisateurs :
 
 - dev pour alice et bob
+```console
+User@localhost:~$ sudo usermod alice -g dev
+User@localhost:~$ sudo usermod bob -g dev
+```
+
 - infra pour charlie et dave
+```console
+User@localhost:~$ sudo usermod charlie -g infra
+User@localhost:~$ sudo usermod dave -g infra
+```
 
 ## 7. Créez deux répertoires /home/dev et /home/infra pour le contenu commun aux membres de chaque groupe, et mettez en place les permissions leur permettant d’écrire dans ces dossiers.
 
+On creer les dossiers : 
+```console
+User@localhost:~$ sudo mkdir /home/dev
+User@localhost:~$ sudo mkdir /home/infra
+```
+
+On donne les permissions : 
+```console
+User@localhost:~$ sudo chgrp -R infra /home/infra
+User@localhost:~$ sudo chgrp -R dev /home/dev
+User@localhost:~$ sudo chmod g+w /home/infra
+User@localhost:~$ sudo chmod g+w /home/dev
+```
+
 ## 8. Comment faire pour que, dans ces dossiers, seul le propriétaire d’un fichier ait le droit de renommer ou supprimer ce fichier ?
+
+Ils faut enelever les permission à tout les autres. Pour cela :
+```console
+User@localhost:~$ sudo chmod 700 /home/alice
+```
+
+On peut verifier :
+```console
+User@localhost:~$ ls -l /home/
+total 4
+drwx------ 2 alice   dev       57 Sep 15 08:20 alice
+...
+```
 
 ## 9. Pouvez-vous ouvrir une session en tant que alice ? Pourquoi ?
 
