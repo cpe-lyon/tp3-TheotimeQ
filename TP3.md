@@ -378,8 +378,16 @@ touch: cannot touch 'test/truc': Permission denied
 ```
 
 Supprimer :
+```console
+User@localhost:~$ rm -rf test/truc
+rm: cannot remove 'test/truc': Permission denied
+```
 
 Modifier :
+```console
+User@localhost:~$ touch test/truc
+touch: cannot touch 'test/truc': Permission denied
+```
 
 Deplacer :
 ```console
@@ -387,20 +395,19 @@ User@localhost:~$ cd test
 ls: cannot open directory 'test': Permission denied
 ```
 
-Lister contenu :
-
-On en conclu que les droits en ecritures 
-
-
-
-
-
-
-
-
-
+On en conclu que les droits d'execution bloque toutes les action sur un directory
 
 ## 8. Rétablissez le droit en exécution du répertoire test. Positionnez vous dans ce répertoire et retirez lui à nouveau le droit d’exécution. Essayez de créer, supprimer et modifier un fichier dans le répertoire test, de vous déplacer dans ssrep, de lister son contenu. Qu’en concluez-vous quant à l’influence des droits que l’on possède sur le répertoire courant ? Peut-on retourner dans le répertoire parent avec ”cd..” ? Pouvez-vous donner une explication ?
+
+Modifier ou supprimer le fichier dépend des droits du fichier et non des droits du répertoire courant du fichier.
+
+Si on enlève le droit d'execution d'un répertoire, il sera impossible de voir son contenu et donc non modifiable.
+
+
+
+
+
+
 
 ## 9. Rétablissez le droit en exécution du répertoire test. Attribuez au fichier fichier les droits suffisants pour qu’une autre personne de votre groupe puisse y accéder en lecture, mais pas en écriture.
 
