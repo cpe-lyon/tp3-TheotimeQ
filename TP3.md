@@ -299,17 +299,106 @@ User@localhost:~$ sudo -k
 
 ## 1. Dans votre $HOME, créez un dossier test, et dans ce dossier un fichier fichier contenant quelques lignes de texte. Quels sont les droits sur test et fichier ?
 
+Pour creer les fichiers demandé , on fait : 
+
+```console
+User@localhost:~$ mkdir ~/test
+User@localhost:~$ cd ~/test
+User@localhost:~$ echo "Coucou maman" > fichier
+User@localhost:~$ ls -l
+total 4
+-rw-rw-r-- 1 tquere tquere 13 sept. 20 20:44 fichier
+User@localhost:~$ cd ..
+User@localhost:~$ ls -l
+total 40
+..
+drwxrwxr-x 2 tquere tquere 4096 sept. 20 20:44 '~/test'
+..
+```
+
+Les droits sur le dossier sont : -rw-rw-r--
+Les droits sur le fichier sont : drwxrwxr-x
+
 ## 2. Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’afficher en tant que root. Conclusion ?
+
+Pour retirer les droits : 
+```console
+User@localhost:~$ chmod 000 ~/test
+User@localhost:~$ chmod 000 ~/test/fichier
+```
+
+On peut quand meme modifier le fichier avec les droits de root.
+Root à toujours tout les droits.
 
 ## 3. Redonnez vous les droits en écriture et exécution sur fichier puis exécutez la commande echo "echoHello" > fichier. On a vu lors des TP précédents que cette commande remplace le contenu d’un fichier s’il existe déjà. Que peut-on dire au sujet des droits ?
 
+On redonne tout les droits : 
+```console
+User@localhost:~$ chmod 777 ~/test
+User@localhost:~$ chmod 777 ~/test/fichier
+```
+
+On peut de nouveau modifier le fichier sans les droits root.
+
 ## 4. Essayez d’exécuter le fichier. Est-ce que cela fonctionne ? Et avec sudo ? Expliquez.
+
+Le fichier est executable avec ou sans root , car on a donnée tout les droits sur le fichier.
 
 ## 5. Placez-vous dans le répertoire test, et retirez-vous le droit en lecture pour ce répertoire. Listez le contenu du répertoire, puis exécutez ou affichez le contenu du fichier fichier. Qu’en déduisez-vous ? Rétablissez le droit en lecture sur test.
 
+Il est impossible de lister ou d'affichier le contenu du repertoire si on enleve les droits dessus
+
+```console
+User@localhost:~$ ls test
+ls: cannot open directory 'test': Permission denied
+```
+
 ## 6. Créez dans test un fichier nouveau ainsi qu’un répertoire sstest. Retirez au fichier nouveau et au répertoire test le droit en écriture. Tentez de modifier le fichier nouveau. Rétablissez ensuite le droit en écriture au répertoire test. Tentez de modifier le fichier nouveau, puis de le supprimer. Que pouvezvous déduire de toutes ces manipulations ?
 
+```console
+User@localhost:~$ mkdir sstest
+User@localhost:~$ touch nouveau
+User@localhost:~$ chmod u-w sstest
+User@localhost:~$ chmod u-w nouveau
+```
+
+Si on retire les droits en ecriture , on ne peut plus ecrire dans le fichier
+
 ## 7. Positionnez vous dans votre répertoire personnel, puis retirez le droit en exécution du répertoire test. Tentez de créer, supprimer, ou modifier un fichier dans le répertoire test, de vous y déplacer, d’en lister le contenu, etc…Qu’en déduisez vous quant au sens du droit en exécution pour les répertoires ?
+
+On creer le dossier :
+```console
+User@localhost:~$ mkdir test
+User@localhost:~$ chmod -x test
+```
+Creer :
+```console
+User@localhost:~$ touch test/truc
+touch: cannot touch 'test/truc': Permission denied
+```
+
+Supprimer :
+
+Modifier :
+
+Deplacer :
+```console
+User@localhost:~$ cd test
+ls: cannot open directory 'test': Permission denied
+```
+
+Lister contenu :
+
+On en conclu que les droits en ecritures 
+
+
+
+
+
+
+
+
+
 
 ## 8. Rétablissez le droit en exécution du répertoire test. Positionnez vous dans ce répertoire et retirez lui à nouveau le droit d’exécution. Essayez de créer, supprimer et modifier un fichier dans le répertoire test, de vous déplacer dans ssrep, de lister son contenu. Qu’en concluez-vous quant à l’influence des droits que l’on possède sur le répertoire courant ? Peut-on retourner dans le répertoire parent avec ”cd..” ? Pouvez-vous donner une explication ?
 
@@ -325,12 +414,20 @@ User@localhost:~$ sudo -k
 pourrez vous aider de la commande stat pour valider vos réponses) :
 
 - chmod u=rx,g=wx,o=r fic
+
 - chmod uo+w,g-rx fic en sachant que les droits initiaux de fic sont r--r-x---
+
 - chmod 653 fic en sachant que les droits initiaux de fic sont 711
+
 - chmod u+x,g=w,o-r fic en sachant que les droits initiaux de fic sont r--r-x---
-- 
+
+
 ## 14. Affichez les droits sur le programme passwd. Que remarquez-vous ? En affichant les droits du fichier
 /etc/passwd, pouvez-vous justifier les permissions sur le programme passwd ?
+
+
+
+
 Pour les plus rapides :
 
 ## 15. Access Control Lists (ACL) : suivez le tutoriel de cette page : https://doc.ubuntu-fr.org/acl.
