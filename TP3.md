@@ -404,33 +404,75 @@ Modifier ou supprimer le fichier dépend des droits du fichier et non des droits
 Si on enlève le droit d'execution d'un répertoire, il sera impossible de voir son contenu et donc non modifiable.
 
 
-
-
-
-
-
 ## 9. Rétablissez le droit en exécution du répertoire test. Attribuez au fichier fichier les droits suffisants pour qu’une autre personne de votre groupe puisse y accéder en lecture, mais pas en écriture.
+
+Apres avoir modifier les droits :
+
+```console
+User@localhost:~$ ls -l
+drwxr-x--- 2 tquere tquere 4096 sept. 21 08:08 test
+```
 
 ## 10. Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
 
+On retire tout les droits au autres utilisateur ( group et other ) 
+```console
+User@localhost:~$ umask 077
+User@localhost:~$ touch try
+User@localhost:~$ ls -l
+-rw------- 1 zelinsta zelinsta    0 sept. 21 08:13 try
+```
+
 ## 11. Définissez un umask très permissif qui autorise tout le monde à lire vos fichiers et traverser vos répertoires, mais n’autorise que vous à écrire. Testez sur un nouveau fichier et un nouveau répertoire.
 
+Il faut un umask qui donne les droits suivants :
+`rwx r.x r.x`
+
+On choisit :
+`umask 022`
+
+```console
+User@localhost:~$ umask 022
+User@localhost:~$ mkdir folder
+User@localhost:~$ touch file
+User@localhost:~$ ls -l
+drwxr-xr-x 2 zelinsta zelinsta 4096 sept. 21 08:19 folder
+-rw-r--r-- 1 zelinsta zelinsta    0 sept. 21 08:20 file
+```
 ## 12. Définissez un umask équilibré qui vous autorise un accès complet et autorise un accès en lecture aux membres de votre groupe. Testez sur un nouveau fichier et un nouveau répertoire.
+
+On choisit l'umask : `umask 047`
+```console
+User@localhost:~$ umask 047
+User@localhost:~$ umask -S
+u=rwx,g=wx,o=
+```
 
 ## 13. Transcrivez les commandes suivantes de la notation classique à la notation octale ou vice-versa (vous
 pourrez vous aider de la commande stat pour valider vos réponses) :
 
 - chmod u=rx,g=wx,o=r fic
+`chmod 534 fic`
 
 - chmod uo+w,g-rx fic en sachant que les droits initiaux de fic sont r--r-x---
+`chmod 602 fic`
 
 - chmod 653 fic en sachant que les droits initiaux de fic sont 711
+`rw-r-x-wx`
 
 - chmod u+x,g=w,o-r fic en sachant que les droits initiaux de fic sont r--r-x---
-
+`chmod 520 fic`
 
 ## 14. Affichez les droits sur le programme passwd. Que remarquez-vous ? En affichant les droits du fichier
 /etc/passwd, pouvez-vous justifier les permissions sur le programme passwd ?
+
+```console
+User@localhost:~$ stat /etc/passwd
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+```
+
+Ce fichier contient des informations sur tout les utilisateur. Il appartient à root . Et seulement root peut l'executer .
+
 
 
 
