@@ -85,8 +85,9 @@ infra:x:1003:bob,dave,charlie
 
 ```console
 User@localhost:~$ sudo chgrp -R dev /home/alice
-User@localhost:~$ sudo chgrp -R dev /home/charlie
-User@localhost:~$ sudo chgrp -R dev /home/dave
+User@localhost:~$ sudo chgrp -R dev /home/bob
+User@localhost:~$ sudo chgrp -R infra /home/charlie
+User@localhost:~$ sudo chgrp -R infra /home/dave
 ```
 
 On peut verifier avec : 
