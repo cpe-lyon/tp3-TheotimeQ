@@ -234,22 +234,22 @@ Removing user charlie from group infra
 
 — il expire au 1er juin 2021 :
 ```console
-User@localhost:~$ sudo usermod -e 2021-06-01 dave
+User@localhost:~$ sudo chage -e 2021-06-01 dave
 ```
 
 — il faut changer de mot de passe avant 90 jours
 ```console
-User@localhost:~$ sudo usermod -e 2021-06-01 dave
+User@localhost:~$ sudo chage -M 90 dave
 ```
 
 — il faut attendre 5 jours pour modifier un mot de passe
 ```console
-User@localhost:~$ sudo usermod -m dave
+User@localhost:~$ sudo chage -m 5 dave
 ```
 
 — l’utilisateur est averti 14 jours avant l’expiration de son mot de passe
 ```console
-User@localhost:~$ sudo usermod -W dave
+User@localhost:~$ sudo chage -W 14 dave
 ```
 
 — le compte sera bloqué 30 jours après expiration du mot de passe
@@ -260,13 +260,14 @@ User@localhost:~$ sudo chage -I 30 dave
 On peut tout verifier avec :
 ```console
 User@localhost:~$ sudo chage -l dave
-Last password change                                    : Sep 15, 2022
-Password expires                                        : never
-Password inactive                                       : never
-Account expires                                         : Jan 06, 2021
-Minimum number of days between password change          : 0
-Maximum number of days between password change          : 99999
-Number of days of warning before password expires       : 7
+Last password change					: sept. 22, 2022
+Password expires					: déc. 21, 2022
+Password inactive					: janv. 20, 2023
+Account expires						: juin 01, 2021
+Minimum number of days between password change		: 5
+Maximum number of days between password change		: 90
+Number of days of warning before password expires	: 14
+
 ```
 
 ## 17. Quel est l’interpréteur de commandes (Shell) de l’utilisateur root ?
